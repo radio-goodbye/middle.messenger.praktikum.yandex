@@ -29,23 +29,23 @@ class Templator {
                 scope = key[4],
                 innerText = key[5];
             var newText = "";
-                switch (tag) {
-                    case 'if':
-                        newText = this._if(innerText, context, this._get(context.value, scope));
-                        break;
-                    case 'loop':
-                        var scopeTextInro = this._regexp_extract(this.INTERNAL_TAG_INTRO_REGXP, scope);
-                        newText = this._each(innerText, context, this._get(context.value, scopeTextInro[1]), scopeTextInro[3]);
-                        break;
-                    case 'block':
-                        context.value[`__templ_func___${name}`] = this._block(innerText, context, scope, name);
-                        break;
-                    case 'bind':
-                        if (context.value[`__templ_func___${name}`]) {
-                            newText = context.value[`__templ_func___${name}`](this._get(context.value, scope));
-                        }
-                        break;
-                }
+            switch (tag) {
+                case 'if':
+                    newText = this._if(innerText, context, this._get(context.value, scope));
+                    break;
+                case 'loop':
+                    var scopeTextInro = this._regexp_extract(this.INTERNAL_TAG_INTRO_REGXP, scope);
+                    newText = this._each(innerText, context, this._get(context.value, scopeTextInro[1]), scopeTextInro[3]);
+                    break;
+                case 'block':
+                    context.value[`__templ_func___${name}`] = this._block(innerText, context, scope, name);
+                    break;
+                case 'bind':
+                    if (context.value[`__templ_func___${name}`]) {
+                        newText = context.value[`__templ_func___${name}`](this._get(context.value, scope));
+                    }
+                    break;
+            }
 
             tmpl = tmpl.replaceAll(key[0], newText);
             intTagRegexp.lastIndex = 0;
@@ -161,12 +161,12 @@ class Templator {
 
 }
 
-function fastCompile(filepath, context){
+function fastCompile(filepath, context) {
     try {
-        var path = filepath.replace(process.cwd()+'/src', process.cwd()+'/dist')
+        var path = filepath.replace(process.cwd() + '/src', process.cwd() + '/dist');
         var text = fs.readFileSync(path, 'utf8');
         var templator = new Templator(text);
-        var newHtml= templator.compile(context);
+        var newHtml = templator.compile(context);
         return newHtml;
     }
     catch (err) {
@@ -174,4 +174,4 @@ function fastCompile(filepath, context){
     }
 }
 
-module.exports = { Templator,fastCompile }
+module.exports = { Templator, fastCompile }
