@@ -1,0 +1,23 @@
+{
+  "name": "messenger",
+  "version": "1.0.0",
+  "description": "",
+  "default": "index.js",
+  "scripts": {
+    "start": "node ./src/app/index.js",
+    "compile_examples": "node ./src/app/compile_examples.js",
+    "build": "./node_modules/.bin/parcel build ./src/**/*.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2",
+    "node-sass": "^7.0.1",
+    "parcel": "^2.1.1",
+    "sass": "^1.46.0",
+    "tar": "^6.1.11"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.1.1"
+  }
+}
