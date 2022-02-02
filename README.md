@@ -6,17 +6,25 @@
 
 ### Запуск
 Запуск выполняется командой `npm run start`
+
+### Провека стилей
+Проверка стилей с помощью линтеров выполняется командой `npm run lint`
+
+### Супер-запуск
+Можно запустить сразу линтеры, затем сборку, затем запуск сервера. Для этого можно использовать команду `npm run superstart`
+
 =======
-### Netify
-Страница деплоя: [https://practical-raman-fd69b6.netlify.app](https://practical-raman-fd69b6.netlify.app)\
-В качестве индексной страницы у меня используется логин (или редирект на чат если залогинен, но это в будущем). Так как у меня используется онлайн-компиляция шаблонов в HTML при запросе, а netlify не запускает без танцев с бубном express.js, то и файла index.html у меня нет. То есть страница деплоя открывается с ошибкой. \
-Но! Я скомпилировал пример уже скомпилированных шаблонов в статические файлы, они доступны по адресам:\
-[login](https://practical-raman-fd69b6.netlify.app/pages/examples/login.html) \
-[register](https://practical-raman-fd69b6.netlify.app/pages/examples/register.html) \
-[settings](https://practical-raman-fd69b6.netlify.app/pages/examples/settings.html) \
-[chat](https://practical-raman-fd69b6.netlify.app/pages/examples/chat.html) \
-[error 404](https://practical-raman-fd69b6.netlify.app/pages/examples/error_404.html) \
-[error 500+](https://practical-raman-fd69b6.netlify.app/pages/examples/error_500_and_more.html)
+### О реализации
+Шаблонизатор написан самостоятельно.
+В качестве примера реализции шаблона MVC я использовал ASP.NET, но изменил кое-что для удобства.
+Контроллеры (лежат в папке src/controllers) будут использоваться для реализации логики контроллеров. Сейчас они отвечают за отдачу "каркаса" страницы (лайаут), сгенерированного с помощью шаблонизатора. Но сами внутренности страниц генерируются на клиенте.
+Внутренности страниц (стили, шаблоны, index.ts) лежат в папках src/views/pages/**
+Сервер использует express.js, логика написана на TS. Поэтому сначала файл сервера нужно странслировать в js, что делает первая часть комманды запуска проекта.
+Перед запуском проект его нужно собрать. Рекоммендую использовать команду `npm run superstart`
+
+### Netlify
+Страница деплоя: [https://practical-raman-fd69b6.netlify.app](https://practical-raman-fd69b6.netlify.app) 
+Я не очень понял шаг что я должен сдеплоить на Нетлифай, потому что тот работает только со статикой, а у меня уже есть серверная логика. Настроить-настроил, но пользы от приложения на нем нет, потому что оно не запускается.
 
 ### Pull request
 [github.com](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/1) 

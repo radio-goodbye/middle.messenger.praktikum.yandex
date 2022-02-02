@@ -1,57 +1,66 @@
-@mixin flex{
-    display: flex;
+@mixin flex {
+  display: flex;
 }
 
-@mixin flex_center{
-    @include flex();
-    justify-content: center;
-    align-items: center;
+@mixin flex_center {
+  @include flex();
+
+  align-items: center;
+  justify-content: center;
 }
 
-@mixin flex_n{
-    @include flex();
-    justify-content: center;
-    align-items: flex-start;
+@mixin flex_n {
+  @include flex();
+
+  align-items: flex-start;
+  justify-content: center;
 }
 
-@mixin flex_ne{
-    @include flex();
-    justify-content: flex-end;
-    align-items: flex-start;
+@mixin flex_ne {
+  @include flex();
+
+  align-items: flex-start;
+  justify-content: flex-end;
 }
 
-@mixin flex_e{
-    @include flex();
-    justify-content: flex-end;
-    align-items: center;
+@mixin flex_e {
+  @include flex();
+
+  align-items: center;
+  justify-content: flex-end;
 }
 
-@mixin flex_se{
-    @include flex();
-    justify-content: flex-end;
-    align-items: flex-end;
+@mixin flex_se {
+  @include flex();
+
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
-@mixin flex_s{
-    @include flex();
-    justify-content: center;
-    align-items: flex-end;
+@mixin flex_s {
+  @include flex();
+
+  align-items: flex-end;
+  justify-content: center;
 }
 
-@mixin flex_sw{
-    @include flex();
-    justify-content: flex-start;
-    align-items: flex-end;
+@mixin flex_sw {
+  @include flex();
+
+  align-items: flex-end;
+  justify-content: flex-start;
 }
 
-@mixin flex_w{
-    @include flex();
-    justify-content: flex-start;
-    align-items: center;
+@mixin flex_w {
+  @include flex();
+
+  align-items: center;
+  justify-content: flex-start;
 }
 
-@mixin flex_nw{
-    @include flex();
-    justify-content: flex-start;
-    align-items: flex-start;
+@mixin flex_nw {
+  @include flex();
+
+  align-items: flex-start;
+  justify-content: flex-start;
 }
