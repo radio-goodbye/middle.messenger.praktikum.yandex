@@ -19,4 +19,4 @@
 [error 500+](https://practical-raman-fd69b6.netlify.app/pages/examples/error_500_and_more.html)
 
 ### Pull request
-[github.com](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/1) 
+[github.com](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/2) 
