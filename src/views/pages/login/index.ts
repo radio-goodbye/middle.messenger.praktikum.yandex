@@ -7,7 +7,6 @@ const loginPageTemplate = `
 <div>
 <h1>{{header}}</h1>
 <form action="/chat" c-on-submit="onSubmit">
-    
     <div class="field-row">
         {{login_input}}
     </div>
@@ -16,6 +15,11 @@ const loginPageTemplate = `
     </div>
     <div class="buttons-row">
         {{button}}
+    </div>
+    <div class="field-row error-row">
+    [if {{error}}]
+        <h6 class="danger-info">{{error}}</h6>
+    [endif {{error}}]
     </div>
 </form>
 <div class="buttons-row">
@@ -73,4 +77,4 @@ validator.onValidError = function (error: string) {
   page.props.error = error;
 };
 
-page.bindToElement(document.getElementById('form__inner'));
+page.bindToElement(document.getElementById('form__inner')!);

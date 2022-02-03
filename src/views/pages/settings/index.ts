@@ -32,7 +32,7 @@ const settingsPageTemplate = `
     </div>
     <div class="field-row error-row">
     [if {{error}}]
-        <h4 class="danger-info">{{error}}</h4>
+        <h6 class="danger-info">{{error}}</h6>
     [endif {{error}}]
     </div>
     <div class="buttons-row">
@@ -142,4 +142,4 @@ validator.onValidError = function (error: string) {
   page.props.error = error;
 };
 
-page.bindToElement(document.getElementById('form__inner'));
+page.bindToElement(document.getElementById('form__inner')!);

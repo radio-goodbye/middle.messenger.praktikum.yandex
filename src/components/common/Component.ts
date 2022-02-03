@@ -3,6 +3,7 @@ import { EventBus } from './EventBus';
 import { get } from '../../utils/get';
 import { Templator } from '../../utils/Templator';
 import { ComponentEventTypes } from './ComponentEvents';
+import { Dictionary } from '../../types/Dictionary';
 
 /** События компонента */
 export enum ComponentEvents {
@@ -20,37 +21,97 @@ export enum ComponentEvents {
   FLOW_ED = 'flow:events-disable',
 }
 
+/** Вложенный компонент */
+type ComponentChild = {
+  /** Ключ (гуид) */
+  [id: string]:
+  {
+    /** Название компонента */
+    name: string,
+    /** Сам компонент */
+    component: Component
+  }
+};
+
+/** События в компоненте */
+class ComponentEventsMap extends Map<HTMLElement, {
+  /** Название события */
+  event: keyof GlobalEventHandlersEventMap,
+  /** Функция */
+  func: EventListener
+}[]>{
+
+}
+
 /** Компонент */
 export class Component {
   /** Шаблон */
-  template: string = null;
+  template: string;
 
   /** Автобус с событиями */
-  private _eventBus: EventBus = null;
+  private _eventBus?: EventBus;
+
+  /** Автобус с событиями */
+  get eventBus(): EventBus {
+    return this._eventBus!;
+  }
+
+  set eventBus(val: EventBus) {
+    this._eventBus = val;
+  }
 
   /** Дочерние элементы-компоненты */
-  childs: { [id: string]: { name: string, component: Component } } = {};
+  _childs?: ComponentChild = {};
+
+  get childs(): ComponentChild {
+    return this._childs!;
+  }
+
+  set childs(val: ComponentChild) {
+    this._childs = val;
+  }
 
   /** События, привязанные к компоненту */
-  events: Map<HTMLElement, {
-    event: keyof GlobalEventHandlersEventMap,
-    func: EventListener
-  }[]> = new Map<HTMLElement, {
-      event: keyof GlobalEventHandlersEventMap,
-      func: EventListener
-    }[]>();
+  _events?: ComponentEventsMap = new ComponentEventsMap();
+
+  /** События, привязанные к компоненту */
+  get events(): ComponentEventsMap {
+    return this._events!;
+  }
+
+  set events(val: ComponentEventsMap) {
+    this._events = val;
+  }
 
   /** Собственные проперти */
-  props: object = {};
+  _props?: Dictionary = {};
+
+  /** Собственные проперти */
+  get props(): Dictionary {
+    return this._props!;
+  }
+
+  set props(val: Dictionary) {
+    this._props = val;
+  }
 
   /** HTML-элемент компонента */
-  private _element: HTMLElement = null;
+  private _element?: HTMLElement;
 
-  constructor(template: string, data: object, config?: { eventBus?: EventBus }) {
+  /** HTML-элемент компонента */
+  get element(): HTMLElement {
+    return this._element!;
+  }
+
+  set element(val: HTMLElement) {
+    this._element = val;
+  }
+
+  constructor(template: string, data: Dictionary, config?: { eventBus?: EventBus }) {
     this.template = template;
-    this._eventBus = config?.eventBus ?? new EventBus();
+    this.eventBus = config?.eventBus ?? new EventBus();
 
-    const props = {};
+    const props = {} as Dictionary;
 
     if (data) {
       for (const i in data) {
@@ -71,12 +132,21 @@ export class Component {
 
     this._makePropsProxy(props);
 
-    this._registerEvents(this._eventBus);
-    this._eventBus.emit(ComponentEvents.INIT);
+    this._registerEvents(this.eventBus);
+    this.eventBus.emit(ComponentEvents.INIT);
   }
 
   /** Родитель компонента */
-  _parentElement: Element = null;
+  _parentElement?: Element;
+
+  /** Родитель компонента */
+  get parentElement(): Element {
+    return this._parentElement!;
+  }
+
+  set parentElement(val: Element) {
+    this._parentElement = val;
+  }
 
   /**
      * Забиндить компонент к родителю
@@ -84,7 +154,7 @@ export class Component {
      */
   bindToElement(element: Element): void {
     if (element) {
-      this._parentElement = element;
+      this.parentElement = element;
     }
     this._render();
   }
@@ -93,7 +163,7 @@ export class Component {
      * Регистрация событий
      * @param eventBus Автобус для событий
      */
-  _registerEvents(eventBus): void {
+  _registerEvents(eventBus: EventBus): void {
     eventBus.on(ComponentEvents.INIT, this.init.bind(this));
     eventBus.on(ComponentEvents.FLOW_CDM, this._componentDidMount.bind(this));
     eventBus.on(ComponentEvents.FLOW_CDU, this._componentDidUpdate.bind(this));
@@ -105,13 +175,13 @@ export class Component {
 
   /** Создать элемент */
   _createResources(): void {
-    this._element = this._createDocumentElement('template');
+    this.element = this._createDocumentElement('template');
   }
 
   /** Инициализация компонента */
   init(): void {
     this._createResources();
-    this._eventBus.emit(ComponentEvents.FLOW_RENDER);
+    this.eventBus.emit(ComponentEvents.FLOW_RENDER);
   }
 
   /** Триггер: компонент появился на странице */
@@ -123,7 +193,7 @@ export class Component {
      * Функция при появлении компонента на странице
      * @param oldProps
      */
-  componentDidMount(): void { 
+  componentDidMount(): void {
   }
 
   /** Триггер: компонент был обновлен */
@@ -140,17 +210,18 @@ export class Component {
     return true;
   }
 
-  /** Текущий HTML-элемент */
-  get element(): HTMLElement {
-    return this._element;
+  /** Функция перед началом рендера */
+  beforeRender(): void {
+
   }
 
   /** Перерисовать элемент */
-  protected _render(): void {
+  private _render(): void {
+    this.beforeRender();
     this.disableEvents();
     const template: HTMLElement = this._createDocumentElement('div');
     template.innerHTML = this.render();
-    this._element = template.children[0] as HTMLElement;
+    this.element = template.children[0] as HTMLElement;
 
     this.enableEvents();
 
@@ -164,12 +235,19 @@ export class Component {
       });
     }
 
-    if (this._parentElement) {
-      this._parentElement.innerHTML = '';
+    if (this.parentElement) {
+      this.parentElement.innerHTML = '';
       if (this.element) {
-        this._parentElement.appendChild(this.element);
+        this.parentElement.appendChild(this.element);
       }
     }
+
+    this.afterRender();
+  }
+
+  /** Функция после окончания рендера */
+  afterRender(): void {
+
   }
 
   /** Получить строку для рендера компонента */
@@ -180,7 +258,7 @@ export class Component {
 
   /** Функция при включении событий-обработчиков */
   enableEvents(): void {
-    this._eventBus.emit(ComponentEvents.FLOW_EE);
+    this.eventBus.emit(ComponentEvents.FLOW_EE);
   }
 
   /** Триггер: были включены события-обработчики */
@@ -192,16 +270,20 @@ export class Component {
           elements.forEach((el) => {
             const element = el as HTMLElement;
             const attr = element.getAttribute(`c-on-${ev}`);
-            if (attr.trim()) {
+            if (attr?.trim()) {
               const event = get(this.props, attr.trim());
               if (event) {
                 if (!this.events.has(element)) {
                   this.events.set(element, []);
                 }
-                this.events.get(element).push({
-                  event: ev,
-                  func: event as EventListener,
-                });
+                var elem = this.events.get(element);
+                if (elem) {
+                  elem.push({
+                    event: ev,
+                    func: event as EventListener,
+                  });
+                }
+
               }
             }
           });
@@ -214,9 +296,11 @@ export class Component {
       elements.forEach((el) => {
         if (this.events.has(el)) {
           const events = this.events.get(el);
-          events.forEach((ev) => {
-            el.addEventListener(ev.event, ev.func.bind(this));
-          });
+          if (events) {
+            events.forEach((ev) => {
+              el.addEventListener(ev.event, ev.func.bind(this));
+            });
+          }
         }
       });
     }
@@ -224,7 +308,7 @@ export class Component {
 
   /** Функция при выключении обработчиков */
   disableEvents(): void {
-    this._eventBus.emit(ComponentEvents.FLOW_ED);
+    this.eventBus.emit(ComponentEvents.FLOW_ED);
   }
 
   /** Триггер: события-обработчики были выключены */
@@ -240,9 +324,12 @@ export class Component {
       elements.forEach((el) => {
         if (this.events.has(el)) {
           const events = this.events.get(el);
-          events.forEach((ev) => {
-            el.removeEventListener(ev.event, ev.func);
-          });
+          if (events) {
+            events.forEach((ev) => {
+              el.removeEventListener(ev.event, ev.func);
+            });
+          }
+
         }
         this.events.delete(el);
       });
@@ -258,20 +345,19 @@ export class Component {
      * Сделать из объекта пропсы на проксях
      * @param props Объект
      */
-  private _makePropsProxy(props): void {
-    const self = this;
+  private _makePropsProxy(props: Dictionary): void {
 
     this.props = new Proxy(props, {
-      get(obj, prop) {
+      get: (obj, prop) => {
         return obj[prop];
       },
-      set(obj, prop, val) {
-        const oldVal = obj[prop];
+      set: (obj, prop, val) => {
+        let oldVal = obj[prop], newVal = val;
         obj[prop] = val;
-        if (obj[prop] != oldVal) self._eventBus.emit(ComponentEvents.FLOW_CDU);
+        if (newVal !== oldVal) this.eventBus.emit(ComponentEvents.FLOW_CDU);
         return true;
       },
-      deleteProperty(obj, prop) {
+      deleteProperty: (obj, prop) => {
         delete obj[prop];
         return true;
       },
@@ -279,7 +365,22 @@ export class Component {
   }
 
   /** Создать элемент в документе страницы */
-  private _createDocumentElement(tagName): HTMLElement {
+  private _createDocumentElement(tagName: string): HTMLElement {
     return document.createElement(tagName);
+  }
+
+  /** Уничтожить компонент */
+  descruct() {
+    if (Object.keys(this.childs).length > 0) {
+      for (var i in this.childs) {
+        this.childs[i].component.descruct();
+      }
+    }
+    delete this._childs;
+    delete this._parentElement;
+    delete this._element;
+    delete this._props;
+    delete this._events;
+    delete this._eventBus;
   }
 }

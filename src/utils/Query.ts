@@ -1,3 +1,5 @@
+import { Dictionary } from '../types/Dictionary';
+
 /** Методы запросов */
 export enum METHODS{
   GET = 'GET',
@@ -10,7 +12,7 @@ export enum METHODS{
 export type QueryParams = {
   timeout?: number
   method? : METHODS,
-  data? : object,
+  data? : Dictionary,
   headers?: { [id: string]: string }
 };
 
@@ -22,8 +24,12 @@ export class Query<T> {
      * @param options Параметры запросы
      * @returns
      */
-  get(url, options?: QueryParams): Promise<T> {
-    return this._request(url, { ...options, method: METHODS.GET });
+  get(url: string, options?: QueryParams): Promise<T> {
+    let URL = url;
+    if (options?.data){
+      URL = `${url}?${this._queryStringify(options?.data)}`;
+    }
+    return this._request(URL, { ...options, method: METHODS.GET });
   }
 
   /**
@@ -32,7 +38,7 @@ export class Query<T> {
      * @param options Параметры запросы
      * @returns
      */
-  put(url, options?: QueryParams): Promise<T> {
+  put(url: string, options?: QueryParams): Promise<T> {
     return this._request(url, { ...options, method: METHODS.PUT });
   }
 
@@ -42,7 +48,7 @@ export class Query<T> {
      * @param options Параметры запросы
      * @returns
      */
-  post(url, options?: QueryParams) : Promise<T> {
+  post(url: string, options?: QueryParams) : Promise<T> {
     return this._request(url, { ...options, method: METHODS.POST });
   }
 
@@ -52,7 +58,7 @@ export class Query<T> {
      * @param options Параметры запросы
      * @returns
      */
-  delete(url, options?: QueryParams) : Promise<T> {
+  delete(url: string, options?: QueryParams) : Promise<T> {
     return this._request(url, { ...options, method: METHODS.DELETE });
   }
 
@@ -61,7 +67,7 @@ export class Query<T> {
      * @param data Объект
      * @returns
      */
-  private _queryStringify(data): string {
+  private _queryStringify(data: Dictionary): string {
     const arr = [];
     for (const i in data) {
       arr.push(`${i}=${data}`);
@@ -83,9 +89,7 @@ export class Query<T> {
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
-      let URL = url;
-      if (method === METHODS.GET) URL = `${URL}?${this._queryStringify(data)}`;
-      xhr.open(method, URL);
+      xhr.open(method!, url);
 
       xhr.timeout = timeout;
       if (headers) {

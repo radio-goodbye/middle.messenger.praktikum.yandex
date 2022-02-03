@@ -41,7 +41,7 @@ export class EventBus {
      * @param event Событие
      * @param args Аргументы для функции
      */
-  emit(event: string, ...args): void {
+  emit(event: string, ...args: any[]): void {
     if (!this._listeners[event]) {
       throw new Error(`Нет события: ${event}`);
     }

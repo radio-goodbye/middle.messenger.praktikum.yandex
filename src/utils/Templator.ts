@@ -74,9 +74,6 @@ export class Templator {
           break;
       }
 
-      // Я знаю что за ts-ignore нужно давать по рукам, но я так и не сумел заставить parcel распознавать подключенные либы в tsconfig
-      // Как только перейдем на вебпак - уберу это позорище
-      // @ts-ignore
       tmpl = tmpl.replaceAll(key[0], newText);
       intTagRegexp.lastIndex = 0;
     }

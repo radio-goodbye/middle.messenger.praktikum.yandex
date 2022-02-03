@@ -1,5 +1,5 @@
 import { Component } from '../../../components/common/Component';
-import { TextInput } from '../../../components/forms/TextInput';
+import { TextInput, TextInputData } from '../../../components/forms/TextInput';
 import { Dictionary } from '../../../types/Dictionary';
 import { FormValidator } from '../../../utils/FormValidator';
 
@@ -38,7 +38,7 @@ const inputBlockTemplate = `
 `;
 
 class InputSubcomponent extends TextInput {
-  constructor(data: object) {
+  constructor(data: TextInputData) {
     super(data, inputBlockTemplate);
   }
 }
@@ -131,4 +131,4 @@ const page = new Component(
   },
 );
 
-page.bindToElement(document.getElementById('form__inner'));
+page.bindToElement(document.getElementById('form__inner')!);

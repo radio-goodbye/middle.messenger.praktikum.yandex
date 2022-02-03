@@ -62,7 +62,7 @@
         &.error-row{
             @include flex-center();
 
-            h4.danger-info{
+            h4.danger-info,h6.danger-info{
                 color: $crimson;
                 text-align: center;
             }

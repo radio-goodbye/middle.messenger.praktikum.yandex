@@ -1,2 +1,2 @@
 /** Тип данных: словарь */
-export type Dictionary = { [key: string] : any };
+export type Dictionary = { [key: string | symbol] : any };
