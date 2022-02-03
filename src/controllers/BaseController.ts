@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import { Templator } from '../utils/templator';
+import { Templator } from '../utils/Templator';
 import { Dictionary } from '../types/Dictionary';
 
 /**  Базовый контроллер */
