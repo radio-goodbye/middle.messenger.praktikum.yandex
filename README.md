@@ -25,14 +25,12 @@
 ### Netlify
 Страница деплоя: [https://practical-raman-fd69b6.netlify.app](https://practical-raman-fd69b6.netlify.app) 
 Использовал маршрутизацию с помощью конфига нетлифая. По умолчанию ссылается на страницу логина. Нас другие страницы можно попасть по ссылкам на страницам (если есть) или с помощью этих ссылок:
-[Логин /login](https://practical-raman-fd69b6.netlify.app/login) 
-[Регистрация /register](https://practical-raman-fd69b6.netlify.app/register) 
-[Настройки пользователя /settings](https://practical-raman-fd69b6.netlify.app/settings) 
-[Чат /chat](https://practical-raman-fd69b6.netlify.app/chat) 
-[Ошибка 404 /error_404](https://practical-raman-fd69b6.netlify.app/error_404) 
-[Ошибка 505 /error_505](https://practical-raman-fd69b6.netlify.app/erro_505) 
-
-
+[Логин /login](https://practical-raman-fd69b6.netlify.app/login) /
+[Регистрация /register](https://practical-raman-fd69b6.netlify.app/register) /
+[Настройки пользователя /settings](https://practical-raman-fd69b6.netlify.app/settings) /
+[Чат /chat](https://practical-raman-fd69b6.netlify.app/chat) /
+[Ошибка 404 /error_404](https://practical-raman-fd69b6.netlify.app/error_404) /
+[Ошибка 505 /error_500](https://practical-raman-fd69b6.netlify.app/error_500) /
 
 ### Pull request
 [github.com](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/2) 
