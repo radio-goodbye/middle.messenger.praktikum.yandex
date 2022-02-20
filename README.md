@@ -33,4 +33,3 @@
 [Ошибка 505 /error_500](https://practical-raman-fd69b6.netlify.app/error_500) 
 
 ### Pull request
-[github.com](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/2) 
