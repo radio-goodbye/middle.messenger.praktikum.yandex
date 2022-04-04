@@ -6,7 +6,12 @@ const PORT = 3000;
 app.use(express.static('dist', { extensions: ['scss', 'css', 'html'] }));
 
 app.get('/', (req, res) => {
-  res.redirect('/');
+  res.sendFile(`${process.cwd()}/dist/index.html`);
+});
+
+
+app.get(/login|register|settings|chat|error/, (req, res) => {
+  res.sendFile(`${process.cwd()}/dist/index.html`);
 });
 
 app.get('/user_avatar.png', (req, res) => {

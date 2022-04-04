@@ -66,9 +66,6 @@ export class FormValidator {
     if (field) {
       this.data[field] = value;
     }
-
-    console.log(this.data);
-
     for (var i in this.data) {
       const checks = this._getRegexp(i);
       if (checks) {
@@ -101,8 +98,11 @@ export class FormValidator {
      * @param e Событие
      * @returns
      */
-  submit(field: string, e: Event): boolean {
-    return this.checkData(field, (e.target as HTMLInputElement).value);
+  submit(field: string, e: Event | string): boolean {
+    if (typeof e == "string"){
+      return this.checkData(field, e);
+    }
+    else return this.checkData(field, (e.target as HTMLInputElement).value);
   }
 
   /**

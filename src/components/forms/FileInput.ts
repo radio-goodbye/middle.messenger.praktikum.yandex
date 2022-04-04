@@ -13,13 +13,13 @@ export type FileInputData = {
 
 const template = `
 <div class="field-block">
-  <div class="field-title"><label for="{{name}}-field" >{{title}}</label></div>
-  <label for="{{name}}-field" class="field-input-file-label">Выберите файл...</label>
+  <div class="field-title"><label for="{{name}}" >{{title}}</label></div>
+  <label for="{{name}}" class="field-input-file-label">Выберите файл...</label>
   <input 
     class="field-input-file" 
     type="file" 
     name="{{name}}" 
-    id="{{name}}-field" 
+    id="{{name}}" 
     accept="{{accept}}"
     placeholder="{{placeholder}}"/>
 </div>

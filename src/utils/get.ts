@@ -7,11 +7,12 @@ import { Dictionary } from '../types/Dictionary';
  * @param defaultValue Значение по умолчанию
  * @returns Полученный результат
  */
-export const get = function (obj: Dictionary, path: string, defaultValue?: any) : any {
+export const get = function (obj: Dictionary, path: string, defaultValue?: any): any {
   const keys = path.split('.');
 
   let result: Dictionary = obj;
   for (const key of keys) {
+
     result = result[key];
 
     if (result === undefined) {

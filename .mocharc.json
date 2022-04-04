@@ -1,0 +1,11 @@
+{
+    "exclude": [
+      "./node_modules/",
+      "./dist/"
+    ],
+    "extension": [
+      "ts"
+    ],
+    "spec": "src/**/*.test.ts",
+    "require": "tests/babel-register.js"
+  }
