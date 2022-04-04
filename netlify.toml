@@ -35,5 +35,5 @@
 
 [[redirects]]
   from = "/user_avatar.png"
-  to = "/images/common/user.png"
+  to = "src/images/common/user.png"
   status = 200
