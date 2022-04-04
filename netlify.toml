@@ -1,4 +1,39 @@
 [[redirects]]
+  from = "/"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/register"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/settings"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/chat"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/error_404"
+  to = "/"
+  status = 200
+
+[[redirects]]
+  from = "/error_500"
+  to = "/"
+  status = 200
+
+[[redirects]]
   from = "/user_avatar.png"
   to = "/images/common/user.png"
   status = 200
