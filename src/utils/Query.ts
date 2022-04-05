@@ -98,20 +98,18 @@ export class Query<T> {
           xhr.setRequestHeader(i, headers[i]);
         }
       }
-      xhr.onload = function (e) {
+      xhr.onload = function () {
         if (xhr.status == 200){
           console.log(xhr);
           var res = {} as T;
-          try{
+          try {
             res = JSON.parse(xhr.response);
-          }
-          catch(err){
+          } catch (err) {
             res = xhr.response;
           }
           resolve(res);
-        }
-        else{
-          reject({code: xhr.status, data:JSON.parse(xhr.response) })
+        } else {
+          reject({ code: xhr.status, data:JSON.parse(xhr.response) });
         }
       };
 
@@ -126,9 +124,8 @@ export class Query<T> {
           var fd: FormData;
           fd = data;
           xhr.send(fd);
-        }
-        else {
-          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8")
+        } else {
+          xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
           xhr.send(JSON.stringify(data));
         }
       }

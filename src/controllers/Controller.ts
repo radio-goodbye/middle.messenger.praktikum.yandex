@@ -1,9 +1,9 @@
-import { Store } from "../store/Store";
+import { Store } from '../store/Store';
 
 export class Controller{
-    store: Store;
+  store: Store;
 
-    constructor(store: Store){
-        this.store = store;
-    }
+  constructor(store: Store){
+    this.store = store;
+  }
 }
