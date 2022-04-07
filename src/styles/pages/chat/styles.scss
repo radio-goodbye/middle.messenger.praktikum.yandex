@@ -1,0 +1,244 @@
+@import '../../colors.scss';
+@import '../../positioning.scss';
+
+@mixin button{
+    border-radius: 10px;
+    background-color: $wedgewood;
+    border: 1px solid $prussian_blue;
+    color: white;
+    font-size: 15px;
+    padding: 5px 10px;
+}
+
+#chat_page{
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    grid-template-rows: 7% 1fr 7% 30px;
+    width: 100%;
+    height: 100%;
+
+    #contacts_area{
+        grid-row: 1/span 3;
+        background-color:white;
+
+        .chat_add_box{
+            @include flex_center;
+            padding: 5px 0px;
+            button{
+                @include button;
+            }
+        }
+
+        .contact_box{
+            display: grid;
+            grid-template-columns: 2fr 5fr;
+            height: 75px;
+            border-bottom: 1px solid;
+
+            .contact_avatar{
+                grid-row: 1/span 2;
+                @include flex_center;
+                img{
+                    height: 50px;
+                }
+
+            }
+
+            .contact_name{
+                font-weight: bold;
+                font-size: 15px;
+               
+                @include flex_sw;
+                padding: 5px 0px;
+            }
+
+            .contact_message{
+                font-size: 13px;
+                @include flex_nw;
+                padding: 5px 0px;
+
+            }
+        }
+    }
+
+    #contact_info_area{
+       
+        background-color:white;
+        border-bottom: 1px solid;
+        display: flex;
+        flex-direction: row;
+
+        .contact_info_box{
+            display: grid;
+            grid-template-columns: 2fr 5fr;
+            flex: 1;
+
+            .contact_info_avatar{
+                grid-row: 1/span 2;
+                @include flex_center;
+
+                img{
+                     height: 35px;
+                }
+
+            }
+
+            .contact_info_name{
+                font-weight: bold;
+                font-size: 15px;
+               
+                display: flex;
+                @include flex_sw;
+                padding: 5px 0px;
+            }
+
+            .contact_info_lastonline{
+                font-size: 10px;
+                color: gray;
+                @include flex_nw;
+                padding: 5px 0px;
+            }
+        }
+
+        .contact_info_manage{
+            padding: 0px 10px;
+            @include flex_e;
+            button{
+                @include button;
+            }
+        }
+    }
+
+    #messages_area{
+        display: flex;
+        flex-direction: column-reverse;
+        overflow-y: scroll;
+        padding: 20px 0px;
+
+        .info-message{
+            text-align: center;
+            margin-top: 20px;
+            span{
+                background-color: #fff;
+                border-radius: 15px;
+                color: black;
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+        }
+
+        .message{
+            display: flex;
+            flex-direction: row;
+            margin: 3px 0px;
+
+            .message_box{
+                display: flex;
+                flex-direction: column;
+                background-color: white;
+                padding: 10px;
+                width: 200px;
+                border-radius: 10px;
+
+                .message_user{
+                    font-size: 10px;
+                    color: gray;
+                    display: flex;
+                    font-weight: bolder;
+                }
+
+                .message_time{
+                    font-size: 7px;
+                    color: gray;
+                    display: flex;
+                }
+
+                .message_text{
+                    font-size: 14px;
+                    display: flex;
+                }
+            }
+
+            &.message_output{
+                padding-right: 15px;
+                justify-content: flex-end;
+                align-items: center;
+
+                .message_box{
+                    .message_user, .message_time, .message_text{
+                        align-items: center;
+                        justify-content: flex-end;
+                    }
+                }
+            }
+
+            &.message_input{
+                padding-left: 15px;
+                padding-right: 15px;
+                justify-content: flex-start;
+                align-items: center;
+
+                .message_box{
+                    .message_user, .message_time, .message_text{
+                        align-items: center;
+                        justify-content: flex-start;
+                    }
+                }
+            }
+        }
+    }
+
+    #input_area{
+        
+
+        background-color: white;
+        border-bottom: 1px solid;
+
+        form{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            width: 100%;
+            height: 100%;
+
+            .input_block{
+                flex: 10;
+                padding: 10px;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                input{
+                    width: 100%;
+                }
+            }
+
+            .input_button{
+                flex: 2;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                button{
+                    @include button;
+                }
+            }
+
+        }
+
+    }
+
+    #footer_area{
+        grid-column: 1/span 2;
+        @include flex_e;
+        background-color: white;
+
+        button{
+            @include button;
+            transform:scale(0.6);
+        }
+    }
+}

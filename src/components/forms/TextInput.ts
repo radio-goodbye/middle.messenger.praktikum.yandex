@@ -1,4 +1,4 @@
-import { Component } from '../common/Component';
+import { Component, ComponentEvent } from '../common/Component';
 import { EventBus } from '../common/EventBus';
 
 /** Данные для компонента текстового импута */
@@ -13,10 +13,12 @@ export type TextInputData = {
   value?: string,
   /** Плейсхолдер */
   placeholder?: string,
+  /** Функция при апдейте */
+  update?: ComponentEvent,
   /** Функция при фокусировке на инпуте  */
-  onFocus?: (e: Event) => void,
+  onFocus?:ComponentEvent,
   /** Функция при вывода инпута из текущего фокуса */
-  onBlur?: (e: Event) => void,
+  onBlur?: ComponentEvent,
 };
 
 const inputTemplate = `
@@ -66,7 +68,8 @@ export class TextInput extends Component {
     if (this.element) {
       this.inputs = this.element.getElementsByTagName('input');
       if (this.inputs.length > 0) {
-        this.inputs[0].value = this.inputData;
+        this.inputs[0].value = this.inputData || this.props.value;
+        if(this.props.update) this.props.update( this.inputs[0].value);
         if (this.inFocus) {
           this.inputs[0].focus();
         }

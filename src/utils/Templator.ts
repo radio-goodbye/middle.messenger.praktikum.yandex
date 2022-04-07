@@ -15,10 +15,10 @@ export class Templator {
   TEMPLATE_REGEXP = /\{\{(.*?)\}\}/gi;
 
   /** Служебные теги шаблонизатора: if, loop, template, bind */
-  INTERNAL_TAG_REGEXP  = /\[(if|loop|block|bind)(\s+name=\"(\S+)\")?\s+\{\{(.*)\}\}\s*\](.*)?\s*\[end\1\s+\{\{\4\}\}\s*\]/gms;
+  INTERNAL_TAG_REGEXP = /\[(if|loop|block|bind)(\s+name=\"(\S+)\")?\s+\{\{(.*)\}\}\s*\](.*)?\s*\[end\1\s+\{\{\4\}\}\s*\]/gms;
 
   /** Содержимое служебных тегов */
-  INTERNAL_TAG_INTRO_REGXP  = /(\S+)\s+(in|as)\s+(\S+)/gms;
+  INTERNAL_TAG_INTRO_REGXP = /(\S+)\s+(in|as)\s+(\S+)/gms;
 
   /** Шаблон */
   private _template: string;
@@ -32,7 +32,7 @@ export class Templator {
      * @param context объект компиляции
      * @returns Строка с подмененными значениями
      */
-  compile(context: { [key: string] : any }) {
+  compile(context: { [key: string]: any }) {
     return this._compile(this._template, { name: 'Основной конктекст', value: context });
   }
 
@@ -78,6 +78,8 @@ export class Templator {
       intTagRegexp.lastIndex = 0;
     }
 
+    tmpl = tmpl.replaceAll(/\<\/?script\>/gm, '');
+
     const templateRegexp = this.TEMPLATE_REGEXP;
     key = null;
     while ((key = templateRegexp.exec(tmpl)) != null) {
@@ -113,7 +115,7 @@ export class Templator {
   private _regexp_extract(regexp: RegExp, str: string): RegExpExecArray | null {
     let key: RegExpExecArray | null = null;
 
-    let arr : RegExpExecArray | null = null;
+    let arr: RegExpExecArray | null = null;
     while ((key = regexp.exec(str))) {
       if (arr) continue;
       arr = key;
@@ -172,7 +174,7 @@ export class Templator {
         const mergedContext = this._mergeContexts(parentCtx, { name: elementName, value: elementContext });
         return this._compile(innerTemplate, mergedContext);
       });
-      return arr.join('\n');
+      return arr.join('');
     }
     if (typeof loop_variable_value === 'object') {
       if (Object.keys(loop_variable_value).length == 0) return '';
@@ -183,7 +185,7 @@ export class Templator {
         const mergedContext = this._mergeContexts(parentCtx, { name: elementName, value: elementContext });
         return this._compile(innerTemplate, mergedContext);
       });
-      return arrObj.join('\n');
+      return arrObj.join('');
     }
     throw new Error(`Объект "${elementName}" не предназначен для перебора`);
   }

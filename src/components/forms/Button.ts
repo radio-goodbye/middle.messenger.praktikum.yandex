@@ -1,15 +1,17 @@
-import { Component } from '../common/Component';
+import { Component, ComponentEvent } from '../common/Component';
 import { EventBus } from '../common/EventBus';
 
 /** Данные для компонента кнопки */
 export type ButtonData = {
   /** Текст на кнопке */
-  text: string
+  text: string,
+  /** Функция при клике */
+  onClick?: ComponentEvent
 };
 
 const template = `
 <div class="button-block">
-  <button class="main-button" type="submit" >{{text}}</button>
+  <button class="main-button" type="submit" c-on-click="onClick">{{text}}</button>
 </div>
 `;
 /** Компонент кнопки в форме */

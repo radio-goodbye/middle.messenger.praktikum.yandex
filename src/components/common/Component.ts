@@ -40,13 +40,25 @@ class ComponentEventsMap extends Map<HTMLElement, {
   /** Функция */
   func: EventListener
 }[]>{
-
+  constructor(){
+    super();
+  }
 }
+
+export type ComponentEvent = (e: Event | string, component: Component) => void
 
 /** Компонент */
 export class Component {
+  protected _template: string;
+
   /** Шаблон */
-  template: string;
+  get template(): string {
+    return this._template;
+  }
+
+  set template(val: string) {
+    this._template = val;
+  }
 
   /** Автобус с событиями */
   private _eventBus?: EventBus;
@@ -61,7 +73,7 @@ export class Component {
   }
 
   /** Дочерние элементы-компоненты */
-  _childs?: ComponentChild = {};
+  private _childs?: ComponentChild = {};
 
   get childs(): ComponentChild {
     return this._childs!;
@@ -72,7 +84,7 @@ export class Component {
   }
 
   /** События, привязанные к компоненту */
-  _events?: ComponentEventsMap = new ComponentEventsMap();
+  private _events?: ComponentEventsMap;
 
   /** События, привязанные к компоненту */
   get events(): ComponentEventsMap {
@@ -84,7 +96,7 @@ export class Component {
   }
 
   /** Собственные проперти */
-  _props?: Dictionary = {};
+  private _props?: Dictionary = {};
 
   /** Собственные проперти */
   get props(): Dictionary {
@@ -107,37 +119,20 @@ export class Component {
     this._element = val;
   }
 
+  private _data: Dictionary;
+
   constructor(template: string, data: Dictionary, config?: { eventBus?: EventBus }) {
     this.template = template;
     this.eventBus = config?.eventBus ?? new EventBus();
 
-    const props = {} as Dictionary;
-
-    if (data) {
-      for (const i in data) {
-        if (data[i] instanceof Component) {
-          const guid = v4();
-          this.childs[guid] = { name: i, component: data[i] };
-        } else {
-          props[i] = data[i];
-        }
-      }
-    }
-
-    if (Object.keys(this.childs).length != 0) {
-      Object.keys(this.childs).forEach((guid) => {
-        this.template = this.template.replace(new RegExp(`{{\\s*${this.childs[guid].name}\\s*}}`), `<div data-block-id='${guid}'></div>`);
-      });
-    }
-
-    this._makePropsProxy(props);
+    this._data = data;
 
     this._registerEvents(this.eventBus);
-    this.eventBus.emit(ComponentEvents.INIT);
+    if (this.eventBus) this.eventBus.emit(ComponentEvents.INIT);
   }
 
   /** Родитель компонента */
-  _parentElement?: Element;
+  private _parentElement?: Element;
 
   /** Родитель компонента */
   get parentElement(): Element {
@@ -180,8 +175,56 @@ export class Component {
 
   /** Инициализация компонента */
   init(): void {
+    const props = {} as Dictionary;
+    let data = this._data;
+    this.events = new ComponentEventsMap();
+    this.childs = {};
+    if (data) {
+      for (const i in data) {
+        if (data[i] instanceof Component) {
+          const guid = v4();
+          this.childs[guid] = { name: i, component: data[i] };
+          data[i].init();
+        } else {
+          props[i] = data[i];
+        }
+      }
+    }
+
+    if (Object.keys(this.childs).length != 0) {
+      Object.keys(this.childs).forEach((guid) => {
+        this.template = this.template.replace(new RegExp(`{{\\s*${this.childs[guid].name}\\s*}}`), `<div data-block-id='${guid}'></div>`);
+      });
+    }
+
+
+    this._makePropsProxy(props);
+
     this._createResources();
-    this.eventBus.emit(ComponentEvents.FLOW_RENDER);
+
+    this.afterInit();
+
+    if (this.eventBus) this.eventBus.emit(ComponentEvents.FLOW_RENDER);
+
+  }
+
+  afterInit() {
+
+  }
+
+  /** Уничтожить компонент */
+  destruct(): void {
+    if (this.childs)
+      if (Object.keys(this.childs).length > 0) {
+        for (var i in this.childs) {
+          this.childs[i].component.destruct();
+        }
+      }
+    delete this._childs;
+    delete this._parentElement;
+    delete this._element;
+    delete this._props;
+    delete this._events;
   }
 
   /** Триггер: компонент появился на странице */
@@ -215,13 +258,21 @@ export class Component {
 
   }
 
+  redraw() {
+    if (this.eventBus) this.eventBus.emit(ComponentEvents.FLOW_RENDER);
+  }
+
   /** Перерисовать элемент */
   private _render(): void {
     this.beforeRender();
     this.disableEvents();
     const template: HTMLElement = this._createDocumentElement('div');
     template.innerHTML = this.render();
-    this.element = template.children[0] as HTMLElement;
+    let el = template.children[0] as HTMLElement;
+    if (this.element.parentNode) {
+      this.element.parentNode.replaceChild(el, this.element);
+    }
+    this.element = el;
 
     this.enableEvents();
 
@@ -258,7 +309,7 @@ export class Component {
 
   /** Функция при включении событий-обработчиков */
   enableEvents(): void {
-    this.eventBus.emit(ComponentEvents.FLOW_EE);
+    if (this.eventBus) this.eventBus.emit(ComponentEvents.FLOW_EE);
   }
 
   /** Триггер: были включены события-обработчики */
@@ -280,7 +331,8 @@ export class Component {
                 if (elem) {
                   elem.push({
                     event: ev,
-                    func: event as EventListener,
+                    //@ts-ignore
+                    func: (ev) => (event as EventListener)(ev, this),
                   });
                 }
 
@@ -298,7 +350,7 @@ export class Component {
           const events = this.events.get(el);
           if (events) {
             events.forEach((ev) => {
-              el.addEventListener(ev.event, ev.func.bind(this));
+              el.addEventListener(ev.event, ev.func);
             });
           }
         }
@@ -308,7 +360,7 @@ export class Component {
 
   /** Функция при выключении обработчиков */
   disableEvents(): void {
-    this.eventBus.emit(ComponentEvents.FLOW_ED);
+    if (this.eventBus) this.eventBus.emit(ComponentEvents.FLOW_ED);
   }
 
   /** Триггер: события-обработчики были выключены */
@@ -354,7 +406,7 @@ export class Component {
       set: (obj, prop, val) => {
         let oldVal = obj[prop], newVal = val;
         obj[prop] = val;
-        if (newVal !== oldVal) this.eventBus.emit(ComponentEvents.FLOW_CDU);
+        if (newVal !== oldVal && this.eventBus) this.eventBus.emit(ComponentEvents.FLOW_CDU);
         return true;
       },
       deleteProperty: (obj, prop) => {
@@ -367,20 +419,5 @@ export class Component {
   /** Создать элемент в документе страницы */
   private _createDocumentElement(tagName: string): HTMLElement {
     return document.createElement(tagName);
-  }
-
-  /** Уничтожить компонент */
-  descruct() {
-    if (Object.keys(this.childs).length > 0) {
-      for (var i in this.childs) {
-        this.childs[i].component.descruct();
-      }
-    }
-    delete this._childs;
-    delete this._parentElement;
-    delete this._element;
-    delete this._props;
-    delete this._events;
-    delete this._eventBus;
   }
 }

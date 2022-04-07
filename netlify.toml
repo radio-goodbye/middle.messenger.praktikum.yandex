@@ -1,39 +1,39 @@
 [[redirects]]
   from = "/"
-  to = "/views/pages/login/login.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/login"
-  to = "/views/pages/login/login.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/register"
-  to = "/views/pages/register/register.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/settings"
-  to = "/views/pages/settings/settings.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/chat"
-  to = "/views/pages/chat/chat.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/error_404"
-  to = "/views/pages/error/error_404.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/error_500"
-  to = "/views/pages/error/error_500.html"
+  to = "/"
   status = 200
 
 [[redirects]]
   from = "/user_avatar.png"
-  to = "/images/common/user.png"
+  to = "src/images/common/user.png"
   status = 200

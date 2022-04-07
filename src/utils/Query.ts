@@ -12,7 +12,7 @@ export enum METHODS{
 export type QueryParams = {
   timeout?: number
   method? : METHODS,
-  data? : Dictionary,
+  data? : Dictionary | FormData,
   headers?: { [id: string]: string }
 };
 
@@ -89,6 +89,7 @@ export class Query<T> {
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
       xhr.open(method!, url);
 
       xhr.timeout = timeout;
@@ -98,7 +99,18 @@ export class Query<T> {
         }
       }
       xhr.onload = function () {
-        resolve(xhr as any);
+        if (xhr.status == 200){
+          console.log(xhr);
+          var res = {} as T;
+          try {
+            res = JSON.parse(xhr.response);
+          } catch (err) {
+            res = xhr.response;
+          }
+          resolve(res);
+        } else {
+          reject({ code: xhr.status, data:JSON.parse(xhr.response) });
+        }
       };
 
       xhr.onabort = reject;
@@ -108,7 +120,14 @@ export class Query<T> {
       if (method === METHODS.GET || !data) {
         xhr.send();
       } else {
-        xhr.send(data as XMLHttpRequestBodyInit);
+        if (data instanceof FormData) {
+          var fd: FormData;
+          fd = data;
+          xhr.send(fd);
+        } else {
+          xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+          xhr.send(JSON.stringify(data));
+        }
       }
     });
   }

@@ -21,6 +21,5 @@
 ### Netlify
 Страница деплоя: [https://practical-raman-fd69b6.netlify.app](https://practical-raman-fd69b6.netlify.app) \
 
-
 ### Pull request
-[https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/3](https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/3)\
+https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/3
