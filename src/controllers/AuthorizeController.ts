@@ -10,7 +10,7 @@ export class AuthorizeController extends Controller {
 
   signOutApi: SignOutApi = new SignOutApi();
 
-  check_user(){
+  check_user() {
     this.signInApi.request()
       .then((data) => {
         this.store.set('user', data, 'check:complete');
@@ -59,7 +59,7 @@ export class AuthorizeController extends Controller {
       });
   }
 
-  logout(){
+  logout() {
     this.signOutApi.create().then(() => {
       this.store.set('user', null, 'logout:complete');
     })

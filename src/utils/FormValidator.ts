@@ -99,7 +99,7 @@ export class FormValidator {
      * @returns
      */
   submit(field: string, e: Event | string): boolean {
-    if (typeof e == 'string'){
+    if (typeof e == 'string') {
       return this.checkData(field, e);
     } else return this.checkData(field, (e.target as HTMLInputElement).value);
   }

@@ -9,9 +9,9 @@ export type StoreEmitter = (data?: any) => void;
 
 export class Store extends EventBus {
 
-  constructor(){
+  constructor() {
     super();
-    if (!localStorage.getItem('userStore')){
+    if (!localStorage.getItem('userStore')) {
       localStorage.setItem('userStore', '{}');
             
     }

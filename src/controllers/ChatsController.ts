@@ -5,7 +5,7 @@ import { UserSearchApi } from '../api/UserSearchApi';
 import { ChatStateModel } from '../types/models/ChatStateModel';
 import { Controller } from './Controller';
 
-export class ChatsController extends Controller{
+export class ChatsController extends Controller {
 
   chatList : ChatListApi = new ChatListApi();
 
@@ -15,23 +15,23 @@ export class ChatsController extends Controller{
 
   userSearchApi: UserSearchApi = new UserSearchApi();
 
-  getChats(){
+  getChats() {
     this.chatList.request().then((data) => {
       this.store.set('chats', data, 'chats:update');
     });
   }
     
-  createChat(name: string){
+  createChat(name: string) {
     this.chatList.create({ name }).then(() => {
       this.getChats();
     });
   }
 
-  selectChat(id: number){
+  selectChat(id: number) {
 
     this.chatList.request().then(data => {
       let chat = data.find(ch => ch.id === id);
-      if (chat){
+      if (chat) {
         let chatState = { id, title: chat.title, avatar: chat.avatar } as ChatStateModel;
 
         this.chatTokenApi.request({ id })

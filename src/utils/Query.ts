@@ -1,7 +1,7 @@
 import { Dictionary } from '../types/Dictionary';
 
 /** Методы запросов */
-export enum METHODS{
+export enum METHODS {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',
@@ -26,7 +26,7 @@ export class Query<T> {
      */
   get(url: string, options?: QueryParams): Promise<T> {
     let URL = url;
-    if (options?.data){
+    if (options?.data) {
       URL = `${url}?${this._queryStringify(options?.data)}`;
     }
     return this._request(URL, { ...options, method: METHODS.GET });
@@ -99,7 +99,7 @@ export class Query<T> {
         }
       }
       xhr.onload = function () {
-        if (xhr.status == 200){
+        if (xhr.status == 200) {
           console.log(xhr);
           var res = {} as T;
           try {
