@@ -8,12 +8,14 @@
     "build": " ./node_modules/.bin/webpack",
     "superstart": "npm run lint && npm run build && npm run start",
     "lint": "./node_modules/.bin/stylelint ./src/**/*.scss && ./node_modules/.bin/eslint  ./src/**/*.ts --fix",
+    "precommit": "npm run lint && npm run test",
     "tsc": "./node_modules/.bin/tsc",
-    "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.test.ts'"
+    "test": "NODE_ENV=test mocha -r ts-node/register 'src/**/*.test.ts'",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all test lint"
+      "pre-commit": "npm-run-all precommit"
     }
   },
   "author": "",

@@ -17,3 +17,4 @@ global.window = dom.window;
 global.document = dom.window.document;
 global.localStorage = _localStorage;
 global.FormData = FormData;
+require.extensions['.scss'] = function () { return null; }; 
