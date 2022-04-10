@@ -5,16 +5,15 @@ import { LoginBlock } from './src/blocks/pages/LoginBlock';
 import { RegisterBlock } from './src/blocks/pages/RegisterBlock';
 import { SettingsBlock } from './src/blocks/pages/SettingsBlock';
 
+setTimeout(() => {
+    const router = new Router("main_layout_background");
 
-const router = new Router("main_layout_background");
-
-router
-    .use('/', LoginBlock)
-    .use('/login', LoginBlock)
-    .use('/register', RegisterBlock)
-    .use('/chat', ChatBlock)
-    .use('/settings', SettingsBlock)
-    .setError(ErrorBlock)
-    .start()
-
-window["router"] = router
+    router
+        .use('/', LoginBlock)
+        .use('/login', LoginBlock)
+        .use('/register', RegisterBlock)
+        .use('/chat', ChatBlock)
+        .use('/settings', SettingsBlock)
+        .setError(ErrorBlock)
+        .start()
+}, 100);

@@ -10,6 +10,9 @@ import { ChatStateModel } from "../../types/models/ChatStateModel";
 import { FormValidator } from "../../utils/FormValidator";
 import { Block, BlockConfig } from "../common/Block";
 
+import '../../styles/pages/chat/styles.scss';
+
+
 /** Тип сообщения */
 enum MessageType {
     /** Входящее */
