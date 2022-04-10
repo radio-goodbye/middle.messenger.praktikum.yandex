@@ -6,12 +6,12 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('dist', { extensions: ['scss', 'css', 'html', 'js'] }));
 
 app.get('/', (req, res) => {
-  res.sendFile(`${process.cwd()}/index.html`);
+  res.sendFile(`${process.cwd()}/dist/index.html`);
 });
 
 
 app.get(/login|register|settings|chat|error/, (req, res) => {
-  res.sendFile(`${process.cwd()}/index.html`);
+  res.sendFile(`${process.cwd()}/dist/index.html`);
 });
 
 app.get('/user_avatar.png', (req, res) => {
