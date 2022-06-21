@@ -1,7 +1,7 @@
 import { ChatUserModel } from '../types/models/ChatUserModel';
 import { BaseApi } from './BaseApi';
 
-export class ChatUsersApi extends BaseApi{
+export class ChatUsersApi extends BaseApi {
   request(data: { id: number }) {
     return this.instance.get<ChatUserModel[]>(`chats/${data.id}/users`);
   }

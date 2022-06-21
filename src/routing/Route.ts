@@ -7,7 +7,7 @@ export type RouteConfig = {
   state: AppState
 };
 
-export class Route{
+export class Route {
   constructor(pathname: string, view: typeof Block, props: RouteConfig) {
     this.pathname = pathname;
     this._blockClass = view;
@@ -16,21 +16,21 @@ export class Route{
 
   private _pathname: string;
 
-  get pathname(): string{
+  get pathname(): string {
     return this._pathname;
   }
 
-  set pathname(val: string){
+  set pathname(val: string) {
     this._pathname = val;
   }
 
   private _props: RouteConfig;
 
-  get props(): RouteConfig{
+  get props(): RouteConfig {
     return this._props;
   }
 
-  set props(val: RouteConfig){
+  set props(val: RouteConfig) {
     this._props = val;
   }
 
@@ -38,11 +38,11 @@ export class Route{
 
   private _block: Block;
 
-  get block() : Block{
+  get block() : Block {
     return this._block;
   }
 
-  set block(val: Block){
+  set block(val: Block) {
     this._block = val;
   }
 

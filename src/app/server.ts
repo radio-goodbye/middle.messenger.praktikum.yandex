@@ -1,9 +1,9 @@
 import * as express from 'express';
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.static('dist', { extensions: ['scss', 'css', 'html'] }));
+app.use(express.static('dist', { extensions: ['scss', 'css', 'html', 'js'] }));
 
 app.get('/', (req, res) => {
   res.sendFile(`${process.cwd()}/dist/index.html`);

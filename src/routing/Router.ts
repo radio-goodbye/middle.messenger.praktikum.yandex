@@ -76,10 +76,10 @@ export class Router {
     var el = document.getElementById(this._rootQuery);
     var links = el?.querySelectorAll('a');
     if (links)
-      for (var i = 0; i < links.length; i++){
+      for (var i = 0; i < links.length; i++) {
         links[i].addEventListener('click', (e) => {
           e.preventDefault();
-          if ((e.srcElement as any).pathname){
+          if ((e.srcElement as any).pathname) {
             this.go((e.srcElement as any).pathname as string);
           }
         });
@@ -105,7 +105,7 @@ export class Router {
 
   private _errorPath: string = '/error';
 
-  setError(block: typeof Block){
+  setError(block: typeof Block) {
     return this.use(this._errorPath, block);
   }
 }

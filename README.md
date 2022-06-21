@@ -20,7 +20,4 @@
 
 ### Деплой
 Netlify: [https://practical-raman-fd69b6.netlify.app](https://practical-raman-fd69b6.netlify.app) \
-Heroku: [https://messenger111444hyhyo.herokuapp.com/](https://messenger111444hyhyo.herokuapp.com/) 
-
-### Pull request
-https://github.com/radio-goodbye/middle.messenger.praktikum.yandex/pull/4
+Heroku: [https://messenger111444hyhyo.herokuapp.com/](https://messenger111444hyhyo.herokuapp.com/)
